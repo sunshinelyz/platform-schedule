@@ -23,5 +23,4 @@ public class MainApplication {
         logger.info("结束启动平台任务调度系统控制台,耗时:" + (System.currentTimeMillis() - start) + "ms");
     }
 
-
 }

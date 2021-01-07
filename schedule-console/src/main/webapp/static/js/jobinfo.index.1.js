@@ -101,9 +101,9 @@ $(function () {
                         msgBtn = '<button class="btn bg-gray btn-xs" type="button" onclick="validJob(' + data + ')">关闭</button> ';
                     }
                     var logBtn = '<button class="btn bg-navy btn-xs" type="button" onclick="gotolog(' + data + ')">日志</button> ';
-                    //  var tipBtn = '<button class="btn btn-danger btn-xs" type="button" onclick="deleteJob(' + data + ')">删除</button> ';
+                    var tipBtn = '<button class="btn btn-danger btn-xs" type="button" onclick="deleteJob(' + data + ')">删除</button> ';
                     //  return btn + executeOncebtn + msgBtn + tipBtn;
-                    return btn + executeOncebtn + msgBtn + logBtn;
+                    return btn + executeOncebtn + msgBtn + logBtn + tipBtn;
                 }
             }
         ],

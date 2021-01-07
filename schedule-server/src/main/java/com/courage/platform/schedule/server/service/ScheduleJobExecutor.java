@@ -53,28 +53,35 @@ public class ScheduleJobExecutor {
         scheduleHashedWheelTimer.start();
     }
 
+    public synchronized void scheduleJobWithLock(ScheduleJobInfo scheduleJobInfo) {
+        scheduleJob(scheduleJobInfo);
+    }
+
     public synchronized void scheduleJob(Long jobId) {
-        ScheduleJobInfo scheduleJobInfo = scheduleJobInfoService.getById(jobId);
+        scheduleJob(scheduleJobInfoService.getById(jobId));
+    }
+
+    private void scheduleJob(ScheduleJobInfo scheduleJobInfo){
         if (scheduleJobInfo == null) {
-            logger.error("当前任务编号:" + jobId + "无法查询到");
-            removeJobById(jobId);
+            logger.error("当前任务编号:" + scheduleJobInfo.getId() + " 无法查询到");
+            removeJobById(scheduleJobInfo.getId());
             return;
         }
 
         boolean addWheelTimer = false;
-        JobMarker jobMarker = currentRunningJobs.get(jobId);
+        JobMarker jobMarker = currentRunningJobs.get(scheduleJobInfo.getId());
         if (jobMarker == null) {
             jobMarker = new JobMarker(scheduleJobInfo.getId(), scheduleJobInfo.getJobCron());
-            currentRunningJobs.put(jobId, jobMarker);
+            currentRunningJobs.put(scheduleJobInfo.getId(), jobMarker);
             addWheelTimer = true;
         } else {
             if (!jobMarker.getJobCron().equals(scheduleJobInfo.getJobCron())) {
-                logger.warn("job编号:" + jobId + " jobName:" + scheduleJobInfo.getJobName() + "cron表达式修改,原cron:" + jobMarker.getJobCron() + " 新:" + scheduleJobInfo.getJobCron());
+                logger.warn("job编号:" + scheduleJobInfo.getId() + " jobName:" + scheduleJobInfo.getJobName() + "cron表达式修改,原cron:" + jobMarker.getJobCron() + " 新:" + scheduleJobInfo.getJobCron());
                 jobMarker.setJobCron(scheduleJobInfo.getJobCron());
                 addWheelTimer = true;
             }
             if (!jobMarker.getJobAvailable().getId().equals(scheduleJobInfo.getStatus())) {
-                logger.warn("job编号:" + jobId + " jobName:" + scheduleJobInfo.getJobName() + "状态修改,原状态:" + jobMarker.getJobAvailable().getId() + " 新:" + scheduleJobInfo.getStatus());
+                logger.warn("job编号:" + scheduleJobInfo.getId() + " jobName:" + scheduleJobInfo.getJobName() + "状态修改,原状态:" + jobMarker.getJobAvailable().getId() + " 新:" + scheduleJobInfo.getStatus());
                 addWheelTimer = true;
             }
         }
@@ -90,17 +97,16 @@ public class ScheduleJobExecutor {
             if (scheduleTimeout != null) {
                 scheduleTimeout.cancel();
             }
-            logger.warn("调度job编号:" + jobId + " jobName:" + scheduleJobInfo.getJobName());
-            boolean result = executeJob(jobId);
+            logger.warn("调度job编号:" + scheduleJobInfo.getId() + " jobName:" + scheduleJobInfo.getJobName());
+            boolean result = executeJob(scheduleJobInfo.getId());
             if (!result) {
                 jobMarker.setJobAvailable(JobAvailable.UNVALID);
             }
         }
-
     }
 
     //该方法的前置条件是本地内存有标记
-    public boolean executeJob(Long jobId) {
+    private boolean executeJob(Long jobId) {
         JobMarker jobMarker = currentRunningJobs.get(jobId);
         if (jobMarker != null && jobMarker.getJobAvailable().equals(JobAvailable.VALID)) {
             ScheduleJobInfo scheduleJobInfo = scheduleJobInfoService.getById(jobId);
@@ -159,7 +165,7 @@ public class ScheduleJobExecutor {
         currentRunningJobs.clear();
     }
 
-    public synchronized void removeJobById(Long jobId) {
+    private synchronized void removeJobById(Long jobId) {
         JobMarker jobMarker = currentRunningJobs.get(jobId);
         if (jobMarker != null) {
             ScheduleTimeout scheduleTimeout = jobMarker.getScheduleTimeout();

@@ -25,6 +25,8 @@ public class ScheduleJobInfoService {
 
     @Autowired
     private ScheduleJobInfoDao scheduleJobInfoDao;
+    @Autowired
+    private ScheduleJobExecutor scheduleJobExecutor;
 
     //每30s加载一次任务信息
     @Scheduled(initialDelay = 60000, fixedRate = 30000)
@@ -36,6 +38,8 @@ public class ScheduleJobInfoService {
             List<ScheduleJobInfo> appinfoList = scheduleJobInfoDao.findAll();
             for (ScheduleJobInfo scheduleJobInfo : appinfoList) {
                 JOB_INFO_CACHE.put(scheduleJobInfo.getId(), scheduleJobInfo);
+                //TODO 回调调度任务接口
+                scheduleJobExecutor.scheduleJobWithLock(scheduleJobInfo);
             }
         } catch (Exception e) {
             logger.error("loadCache error: ", e);
