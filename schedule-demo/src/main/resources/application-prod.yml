@@ -1,5 +1,5 @@
-
 platform:
-  appKey: xxxxx
-  appSecret: xxxx
-  consoleAddress: http://localhost:8081/address
+  schedule:
+    appKey: xxxxx
+    appSecret: xxxx
+    consoleAddress: http://localhost:8081/address

@@ -3,12 +3,12 @@ server:
 
 mysql:
   datasource:
-    ip: 116.63.130.95
+    ip: 127.0.0.1
     port: 3306
     database: tech_platform
     username: root
-    password: ilxw19841201@mysql
+    password: root
 
 console:
    username: admin
-   password: 123456789
+   password: 123456

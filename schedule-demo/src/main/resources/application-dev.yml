@@ -1,0 +1,5 @@
+platform:
+  schedule:
+    appKey: 1400001
+    appSecret: 94f09e9308b716f5d5417a49aeb166e4
+    consoleAddress: http://localhost:8082/address

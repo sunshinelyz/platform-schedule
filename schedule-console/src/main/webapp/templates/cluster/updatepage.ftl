@@ -18,6 +18,7 @@
                     <input type="text" class="form-control required" name="namesrvIp" placeholder="ip信息"
                            autocomplete="off" style="width: 250px;" value="${platformNamesrv.namesrvIp}">
                     <input type="hidden" name="id" value="${platformNamesrv.id}"/>
+                    <input type="hidden" name="status" value="${platformNamesrv.status}"/>
                 </div>
             </div>
             <div class="form-group">

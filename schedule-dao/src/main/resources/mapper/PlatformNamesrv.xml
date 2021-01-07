@@ -15,6 +15,7 @@
 		t.id,
 		t.namesrv_ip,
 		t.type,
+		t.role,
 		t.status,
 		t.create_time,
 		t.update_time
@@ -50,7 +51,7 @@
     </select>
     
     <insert id="insert" parameterType="java.util.HashMap">
-        insert into t_platform_namesrv(namesrv_ip , type ,status   ,  create_time , update_time ) values (#{namesrvIp} , 0  , #{status} , now() ,now())
+        insert into t_platform_namesrv(namesrv_ip , type ,status   ,  create_time , update_time , role) values (#{namesrvIp} , 0  , #{status} , now() ,now(), #{role})
     </insert>
 
     <select id="getById" parameterType="java.lang.Long" resultMap="platformNamesrv">
@@ -62,7 +63,7 @@
     </select>
 
     <update id="update" parameterType="java.util.HashMap">
-        update t_platform_namesrv t set t.namesrv_ip = #{namesrvIp} , t.status = #{status}  , t.update_time = now() where id = #{id}
+        update t_platform_namesrv t set t.namesrv_ip = #{namesrvIp} , t.status = #{status}  , t.update_time = now(), role = #{role} where id = #{id}
     </update>
 
     <delete id="delete" parameterType="java.util.HashMap">

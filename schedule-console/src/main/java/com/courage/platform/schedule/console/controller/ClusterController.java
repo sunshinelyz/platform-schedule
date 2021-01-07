@@ -87,7 +87,9 @@ public class ClusterController {
         String namesrvIp = httpServletRequest.getParameter("namesrvIp");
         String status = httpServletRequest.getParameter("status");
         String id = httpServletRequest.getParameter("id");
+        String role = httpServletRequest.getParameter("role");
         Map map = new HashMap();
+        map.put("role", role);
         map.put("namesrvIp", namesrvIp);
         map.put("status", status);
         map.put("id", id);

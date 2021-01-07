@@ -20,6 +20,8 @@ public class PlatformNamesrv {
 
     private Date updateTime;
 
+    private Integer role;
+
     public Integer getId() {
         return id;
     }
@@ -68,5 +70,11 @@ public class PlatformNamesrv {
         this.updateTime = updateTime;
     }
 
+    public Integer getRole() {
+        return role;
+    }
 
+    public void setRole(Integer role) {
+        this.role = role;
+    }
 }

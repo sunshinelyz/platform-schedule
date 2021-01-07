@@ -15,7 +15,7 @@ public class JobConfig {
     @Value("${platform.schedule.consoleAddress}")
     private String consoleAddress;
 
-    @Value("${spring.name}")
+    @Value("${spring.application.name}")
     private String appName;
 
     @Value("${platform.schedule.appKey}")

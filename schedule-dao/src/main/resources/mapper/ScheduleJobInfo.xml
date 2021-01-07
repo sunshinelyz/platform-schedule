@@ -37,6 +37,8 @@
         `job_cron`,
         `job_param`,
         `route_mode`,
+        `fail_retry_count`,
+        `execute_timeout`,
         `status`,
         `author`,
         `alarm_email`,
@@ -92,6 +94,8 @@
         `job_param`,
         `job_handler`,
         `route_mode`,
+        `fail_retry_count`,
+        `execute_timeout`,
         `author`,
         `alarm_email`,
         `status`,
@@ -107,6 +111,8 @@
         #{jobParam},
         #{jobHandler},
         #{routeMode},
+        #{failRetryCount},
+        #{executeTimeout}
         #{author},
         #{alarmEmail},
         #{status},
@@ -158,6 +164,12 @@
             </if>
             <if test="triggerLastTime != null">
                 trigger_last_time = #{triggerLastTime},
+            </if>
+            <if test="failRetryCount != null">
+                fail_retry_count = #{failRetryCount},
+            </if>
+            <if test="executeTimeout != null">
+                execute_timeout = #{executeTimeout},
             </if>
             update_time = now()
         </set>
